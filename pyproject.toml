@@ -47,10 +47,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage      = "https://github.com/your-org/mlobs"
-Repository    = "https://github.com/your-org/mlobs"
-"Bug Tracker" = "https://github.com/your-org/mlobs/issues"
-Changelog     = "https://github.com/your-org/mlobs/blob/main/CHANGELOG.md"
+Homepage      = "https://github.com/Ahalya24/mlobs"
+Repository    = "https://github.com/Ahalya24/mlobs"
+"Bug Tracker" = "https://github.com/Ahalya24/mlobs/issues"
+Changelog     = "https://github.com/Ahalya24/mlobs/blob/main/CHANGELOG.md"
 
 [tool.hatch.version]
 path = "src/mlobs/_version.py"
