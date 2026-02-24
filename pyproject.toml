@@ -1,0 +1,84 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mlobs"
+dynamic = ["version"]
+description = "ML observability for structured dataframes: drift detection and pipeline logging"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+keywords = ["machine-learning", "observability", "drift", "dataframes", "mlops", "monitoring"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+dependencies = [
+    "numpy>=1.21",
+    "scipy>=1.7",
+]
+
+[project.optional-dependencies]
+pandas = ["pandas>=1.3"]
+polars = ["polars>=0.18"]
+arrow  = ["pyarrow>=10.0"]
+all = [
+    "mlobs[pandas]",
+    "mlobs[polars]",
+    "mlobs[arrow]",
+]
+dev = [
+    "mlobs[all]",
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "mypy>=1.5",
+    "ruff>=0.1",
+]
+
+[project.urls]
+Homepage      = "https://github.com/your-org/mlobs"
+Repository    = "https://github.com/your-org/mlobs"
+"Bug Tracker" = "https://github.com/your-org/mlobs/issues"
+Changelog     = "https://github.com/your-org/mlobs/blob/main/CHANGELOG.md"
+
+[tool.hatch.version]
+path = "src/mlobs/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mlobs"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    "/README.md",
+    "/LICENSE",
+    "/CHANGELOG.md",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts   = "-v"
+
+[tool.mypy]
+python_version = "3.9"
+strict = true
+files = ["src/mlobs"]
+
+[tool.ruff]
+src = ["src"]
+line-length = 99
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
