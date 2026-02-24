@@ -10,7 +10,7 @@ LazyFrame is supported transparently — _materialise() calls .collect().
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 import numpy as np
 
@@ -46,11 +46,11 @@ def _dtype_base(dtype: Any) -> str:
 class PolarsAdapter:
     """Stateless adapter for polars.DataFrame and polars.LazyFrame."""
 
-    def shape(self, df: Any) -> Tuple[int, int]:
+    def shape(self, df: Any) -> tuple[int, int]:
         df = _materialise(df)
         return (df.height, df.width)
 
-    def column_names(self, df: Any) -> List[str]:
+    def column_names(self, df: Any) -> list[str]:
         df = _materialise(df)
         return list(df.columns)
 

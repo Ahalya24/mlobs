@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import uuid
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from mlobs.core.types import _utc_now
 
@@ -38,14 +38,14 @@ class ColumnDriftResult:
     column_name: str
     detector: str
     statistic: float
-    p_value: Optional[float]
+    p_value: float | None
     threshold: float
     drifted: bool
     reference_size: int
     current_size: int
-    extra: Dict[str, Any] = field(default_factory=dict)
+    extra: dict[str, Any] = field(default_factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "column_name": self.column_name,
             "detector": self.detector,
@@ -59,7 +59,7 @@ class ColumnDriftResult:
         }
 
     @classmethod
-    def from_dict(cls, d: Dict[str, Any]) -> "ColumnDriftResult":
+    def from_dict(cls, d: dict[str, Any]) -> ColumnDriftResult:
         return cls(
             column_name=d["column_name"],
             detector=d["detector"],
@@ -89,17 +89,17 @@ class DriftReport:
     """
     reference_name: str
     current_name: str
-    results: List[ColumnDriftResult]
+    results: list[ColumnDriftResult]
     run_id: str = field(default_factory=_generate_run_id)
     timestamp: str = field(default_factory=_utc_now)
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
     # ------------------------------------------------------------------
     # Derived properties
     # ------------------------------------------------------------------
 
     @property
-    def summary(self) -> Dict[str, int]:
+    def summary(self) -> dict[str, int]:
         total = len(self.results)
         drifted = sum(1 for r in self.results if r.drifted)
         return {
@@ -109,14 +109,14 @@ class DriftReport:
         }
 
     @property
-    def drifted_columns(self) -> List[str]:
+    def drifted_columns(self) -> list[str]:
         return [r.column_name for r in self.results if r.drifted]
 
     # ------------------------------------------------------------------
     # Serialisation
     # ------------------------------------------------------------------
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "run_id": self.run_id,
             "timestamp": self.timestamp,
@@ -128,7 +128,7 @@ class DriftReport:
         }
 
     @classmethod
-    def from_dict(cls, d: Dict[str, Any]) -> "DriftReport":
+    def from_dict(cls, d: dict[str, Any]) -> DriftReport:
         return cls(
             run_id=d["run_id"],
             timestamp=d["timestamp"],

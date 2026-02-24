@@ -8,7 +8,6 @@ JSONFormatter tests use plain Python dicts and numpy arrays — no backend neede
 from __future__ import annotations
 
 import json
-import math
 import pathlib
 import tempfile
 
@@ -17,7 +16,6 @@ import pytest
 
 from mlobs.logging.formatters import JSONFormatter
 from mlobs.logging.pipeline import PipelineLogger
-
 
 # ---------------------------------------------------------------------------
 # Fixtures

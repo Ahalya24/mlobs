@@ -14,7 +14,7 @@ The Protocol is runtime_checkable so isinstance() works in get_adapter().
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Protocol, Tuple, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
 
 from mlobs.core.types import ColumnArray, ColumnStats
 
@@ -28,11 +28,11 @@ class DataFrameAdapter(Protocol):
     so adapter instances are stateless and reusable across multiple frames.
     """
 
-    def shape(self, df: Any) -> Tuple[int, int]:
+    def shape(self, df: Any) -> tuple[int, int]:
         """Return (n_rows, n_cols)."""
         ...
 
-    def column_names(self, df: Any) -> List[str]:
+    def column_names(self, df: Any) -> list[str]:
         """Return list of column name strings."""
         ...
 

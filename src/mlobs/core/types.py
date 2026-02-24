@@ -10,10 +10,9 @@ from __future__ import annotations
 
 import datetime
 from dataclasses import dataclass, field
-from typing import Any, Dict, Union
+from typing import Any, Union
 
 import numpy as np
-
 
 # ---------------------------------------------------------------------------
 # Type alias
@@ -49,7 +48,7 @@ class NumericStats:
     q75: float
     max: float
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "count": self.count,
             "null_count": self.null_count,
@@ -70,9 +69,9 @@ class CategoricalStats:
     null_count: int
     n_unique: int
     # Maps category label (as str) to integer frequency count.
-    value_counts: Dict[str, int]
+    value_counts: dict[str, int]
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "count": self.count,
             "null_count": self.null_count,
@@ -96,7 +95,7 @@ class ColumnStats:
     kind: str            # "numeric" or "categorical"
     stats: ColumnStatsPayload
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "name": self.name,
             "dtype": self.dtype,
@@ -124,11 +123,11 @@ class StepRecord:
     """
     step_name: str
     shape: tuple  # plain tuple for Python 3.9 compat
-    columns: Dict[str, ColumnStats]
+    columns: dict[str, ColumnStats]
     timestamp: str = field(default_factory=_utc_now)
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "step_name": self.step_name,
             "timestamp": self.timestamp,

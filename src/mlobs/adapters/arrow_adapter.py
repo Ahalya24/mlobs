@@ -9,7 +9,7 @@ convert them to np.nan for numeric columns so _strip_nulls works uniformly.
 
 from __future__ import annotations
 
-from typing import Any, List, Tuple
+from typing import Any
 
 import numpy as np
 
@@ -35,10 +35,10 @@ def _is_numeric_pa_type(t: Any) -> bool:
 class ArrowAdapter:
     """Stateless adapter for pyarrow.Table objects."""
 
-    def shape(self, df: Any) -> Tuple[int, int]:
+    def shape(self, df: Any) -> tuple[int, int]:
         return (int(df.num_rows), int(df.num_columns))
 
-    def column_names(self, df: Any) -> List[str]:
+    def column_names(self, df: Any) -> list[str]:
         return list(df.schema.names)
 
     def column_dtype(self, df: Any, col: str) -> str:

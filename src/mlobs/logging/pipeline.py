@@ -16,7 +16,8 @@ from __future__ import annotations
 
 import pathlib
 import threading
-from typing import Any, Dict, List, Optional, Sequence
+from collections.abc import Sequence
+from typing import Any
 
 from mlobs.core.types import ColumnStats, StepRecord
 from mlobs.logging.formatters import JSONFormatter
@@ -46,11 +47,11 @@ class PipelineLogger:
     def __init__(
         self,
         name: str = "pipeline",
-        formatter: Optional[JSONFormatter] = None,
+        formatter: JSONFormatter | None = None,
     ) -> None:
         self.name = name
         self._formatter = formatter or JSONFormatter()
-        self._records: List[StepRecord] = []
+        self._records: list[StepRecord] = []
         self._lock = threading.Lock()
 
     # ------------------------------------------------------------------
@@ -61,8 +62,8 @@ class PipelineLogger:
         self,
         df: Any,
         step_name: str,
-        columns: Optional[Sequence[str]] = None,
-        metadata: Optional[Dict[str, Any]] = None,
+        columns: Sequence[str] | None = None,
+        metadata: dict[str, Any] | None = None,
     ) -> StepRecord:
         """
         Compute and record statistics for *df* at pipeline step *step_name*.
@@ -104,7 +105,7 @@ class PipelineLogger:
                     f"(available: {all_cols})"
                 )
 
-        col_stats: Dict[str, ColumnStats] = {
+        col_stats: dict[str, ColumnStats] = {
             col: adapter.compute_column_stats(df, col) for col in selected
         }
 
@@ -125,7 +126,7 @@ class PipelineLogger:
     # ------------------------------------------------------------------
 
     @property
-    def records(self) -> List[StepRecord]:
+    def records(self) -> list[StepRecord]:
         """Return a snapshot copy of all recorded StepRecord objects."""
         with self._lock:
             return list(self._records)
@@ -139,7 +140,7 @@ class PipelineLogger:
     # Serialisation
     # ------------------------------------------------------------------
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Serialise the full log to a Python dict."""
         return {
             "pipeline_name": self.name,
@@ -158,7 +159,7 @@ class PipelineLogger:
     # Context manager
     # ------------------------------------------------------------------
 
-    def __enter__(self) -> "PipelineLogger":
+    def __enter__(self) -> PipelineLogger:
         return self
 
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:

@@ -19,15 +19,12 @@ JSDriftDetector          — Jensen-Shannon Divergence (scipy.spatial.distance)
 
 from __future__ import annotations
 
-from typing import Any, Dict, Optional
-
 import numpy as np
 from scipy import stats
 from scipy.spatial.distance import jensenshannon
 
 from mlobs.core.types import ColumnArray
 from mlobs.drift.report import ColumnDriftResult
-
 
 # ---------------------------------------------------------------------------
 # Shared helpers

@@ -21,7 +21,6 @@ from mlobs.drift.detectors import (
 )
 from mlobs.drift.report import ColumnDriftResult, DriftReport
 
-
 # ---------------------------------------------------------------------------
 # Fixtures (pure numpy — no backend needed)
 # ---------------------------------------------------------------------------

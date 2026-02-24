@@ -10,7 +10,7 @@ None values are handled by _strip_nulls.
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 import numpy as np
 
@@ -28,10 +28,10 @@ _NUMERIC_KINDS = frozenset("iufcb")  # int, uint, float, complex, bool
 class PandasAdapter:
     """Stateless adapter for pandas.DataFrame objects."""
 
-    def shape(self, df: Any) -> Tuple[int, int]:
+    def shape(self, df: Any) -> tuple[int, int]:
         return (int(df.shape[0]), int(df.shape[1]))
 
-    def column_names(self, df: Any) -> List[str]:
+    def column_names(self, df: Any) -> list[str]:
         return [str(c) for c in df.columns]
 
     def column_dtype(self, df: Any, col: str) -> str:
