@@ -122,7 +122,7 @@ class StepRecord:
     metadata  : arbitrary caller-supplied key-value pairs
     """
     step_name: str
-    shape: tuple  # plain tuple for Python 3.9 compat
+    shape: tuple[int, int]
     columns: dict[str, ColumnStats]
     timestamp: str = field(default_factory=_utc_now)
     metadata: dict[str, Any] = field(default_factory=dict)

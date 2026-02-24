@@ -24,7 +24,7 @@ from mlobs.core.types import (
 def _is_numeric_pa_type(t: Any) -> bool:
     """Return True if *t* is a numeric PyArrow type."""
     import pyarrow as pa
-    return (
+    return bool(
         pa.types.is_integer(t)
         or pa.types.is_floating(t)
         or pa.types.is_boolean(t)
@@ -51,11 +51,11 @@ class ArrowAdapter:
         chunked = df.column(col).combine_chunks()
         raw = chunked.to_pylist()
         if self.is_numeric(df, col):
-            return np.array(
+            return np.asarray(  # type: ignore[no-any-return]
                 [x if x is not None else np.nan for x in raw],
                 dtype=np.float64,
             )
-        return np.array(raw, dtype=object)
+        return np.asarray(raw, dtype=object)  # type: ignore[no-any-return]
 
     def compute_column_stats(self, df: Any, col: str) -> ColumnStats:
         chunked = df.column(col)

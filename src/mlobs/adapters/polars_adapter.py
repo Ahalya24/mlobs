@@ -67,14 +67,12 @@ class PolarsAdapter:
         series = df[col]
         if self.is_numeric(df, col):
             import polars as pl
-            return (
-                series.cast(pl.Float64)
-                .fill_null(float("nan"))
-                .to_numpy()
-                .astype(np.float64)
+            return np.asarray(  # type: ignore[no-any-return]
+                series.cast(pl.Float64).fill_null(float("nan")).to_numpy(),
+                dtype=np.float64,
             )
         # String / categorical — nulls become None in object array
-        return np.array(series.to_list(), dtype=object)
+        return np.asarray(series.to_list(), dtype=object)  # type: ignore[no-any-return]
 
     def compute_column_stats(self, df: Any, col: str) -> ColumnStats:
         df = _materialise(df)

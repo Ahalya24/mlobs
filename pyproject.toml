@@ -76,6 +76,10 @@ python_version = "3.9"
 strict = true
 files = ["src/mlobs"]
 
+[[tool.mypy.overrides]]
+module = ["numpy", "numpy.*", "scipy", "scipy.*", "pandas", "pandas.*", "polars", "polars.*", "pyarrow", "pyarrow.*"]
+ignore_missing_imports = true
+
 [tool.ruff]
 src = ["src"]
 line-length = 99

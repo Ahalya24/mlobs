@@ -33,18 +33,18 @@ from mlobs.drift.report import ColumnDriftResult
 def _strip_nulls(arr: ColumnArray) -> ColumnArray:
     """Return a copy of *arr* with NaN / None removed."""
     if arr.dtype.kind in ("f", "c"):  # float / complex
-        return arr[~np.isnan(arr)]
+        return np.asarray(arr[~np.isnan(arr)])  # type: ignore[no-any-return]
     # Object dtype (strings, etc.) — treat None and np.nan as null
     mask = np.array(
         [x is not None and not (isinstance(x, float) and np.isnan(x)) for x in arr],
         dtype=bool,
     )
-    return arr[mask]
+    return np.asarray(arr[mask])  # type: ignore[no-any-return]
 
 
 def _align_categories(
     ref: ColumnArray, cur: ColumnArray
-) -> tuple:  # -> Tuple[np.ndarray, np.ndarray]
+) -> tuple[ColumnArray, ColumnArray]:
     """
     Build frequency arrays aligned over the union of categories in ref and cur.
     Returns (ref_counts, cur_counts) as int64 arrays in the same category order.
@@ -53,8 +53,8 @@ def _align_categories(
     cat_index = {c: i for i, c in enumerate(categories)}
     n = len(categories)
 
-    ref_counts = np.zeros(n, dtype=np.int64)
-    cur_counts = np.zeros(n, dtype=np.int64)
+    ref_counts: np.ndarray = np.zeros(n, dtype=np.int64)
+    cur_counts: np.ndarray = np.zeros(n, dtype=np.int64)
     for v in ref:
         ref_counts[cat_index[v]] += 1
     for v in cur:
@@ -264,8 +264,8 @@ class PSIDriftDetector:
         if is_categorical:
             ref_counts, cur_counts = _align_categories(ref_clean, cur_clean)
         else:
-            ref_float = ref_clean.astype(np.float64)
-            cur_float = cur_clean.astype(np.float64)
+            ref_float: np.ndarray = ref_clean.astype(np.float64)
+            cur_float: np.ndarray = cur_clean.astype(np.float64)
             quantiles = np.linspace(0, 100, self.n_bins + 1)
             bin_edges = np.unique(np.percentile(ref_float, quantiles))
             if len(bin_edges) < 2:
@@ -348,8 +348,8 @@ class JSDriftDetector:
         if is_categorical:
             ref_counts, cur_counts = _align_categories(ref_clean, cur_clean)
         else:
-            ref_float = ref_clean.astype(np.float64)
-            cur_float = cur_clean.astype(np.float64)
+            ref_float: np.ndarray = ref_clean.astype(np.float64)
+            cur_float: np.ndarray = cur_clean.astype(np.float64)
             quantiles = np.linspace(0, 100, self.n_bins + 1)
             bin_edges = np.unique(np.percentile(ref_float, quantiles))
             if len(bin_edges) < 2:

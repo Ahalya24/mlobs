@@ -43,8 +43,8 @@ class PandasAdapter:
     def to_numpy(self, df: Any, col: str) -> ColumnArray:
         series = df[col]
         if series.dtype.kind in _NUMERIC_KINDS:
-            return series.to_numpy(dtype=np.float64, na_value=np.nan)
-        return series.to_numpy(dtype=object)
+            return np.asarray(series.to_numpy(dtype=np.float64, na_value=np.nan))  # type: ignore[no-any-return]
+        return np.asarray(series.to_numpy(dtype=object))  # type: ignore[no-any-return]
 
     def compute_column_stats(self, df: Any, col: str) -> ColumnStats:
         series = df[col]
